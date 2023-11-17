@@ -33,7 +33,7 @@ public class EventiService {
         return eventiRepository.save(newEventi);
     }
 
-    public Page<Eventi> getDispositivo(int page, int size, String orderBy) {
+    public Page<Eventi> getEventi(int page, int size, String orderBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
         return eventiRepository.findAll(pageable);
     }

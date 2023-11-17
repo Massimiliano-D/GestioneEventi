@@ -3,6 +3,7 @@ import Massimiliano.GestioneEventi.Entities.Role;
 import Massimiliano.GestioneEventi.Entities.Utente;
 import Massimiliano.GestioneEventi.Exeptions.BadRequestException;
 import Massimiliano.GestioneEventi.Exeptions.UnauthorizedException;
+import Massimiliano.GestioneEventi.Payloads.AdminDTO;
 import Massimiliano.GestioneEventi.Payloads.UtenteDTO;
 import Massimiliano.GestioneEventi.Payloads.UtenteLoginDTO;
 import Massimiliano.GestioneEventi.Repository.UtenteRepository;
@@ -51,6 +52,24 @@ public class AuthService {
         newUtente.setPassword(bcrypt.encode(body.password()));
         newUtente.setEmail(body.email());
         newUtente.setRole(Role.UTENTE);
+        newUtente.setUsername(body.username());
+        Utente savedUtente = utenteRepository.save(newUtente);
+        return newUtente;
+    }
+    public Utente registerAdmin(AdminDTO body) throws IOException {
+
+        utenteRepository.findByEmail(body.email()).ifPresent(utente -> {
+            throw new BadRequestException("L'email " + utente.getEmail() + " è già utilizzata!");
+        });
+
+        Utente newUtente = new Utente();
+        newUtente.setAvatar("http://ui-avatars.com/api/?name=" + body.name() + "+" + body.surname());
+        newUtente.setName(body.name());
+        newUtente.setSurname(body.surname());
+        newUtente.setPassword(bcrypt.encode(body.password()));
+        newUtente.setEmail(body.email());
+        newUtente.setRole(Role.ADMIN);
+        newUtente.setUsername(body.username());
         Utente savedUtente = utenteRepository.save(newUtente);
         return newUtente;
     }

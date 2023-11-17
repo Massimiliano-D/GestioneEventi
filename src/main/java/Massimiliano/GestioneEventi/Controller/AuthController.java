@@ -2,6 +2,7 @@ package Massimiliano.GestioneEventi.Controller;
 
 import Massimiliano.GestioneEventi.Entities.Utente;
 import Massimiliano.GestioneEventi.Exeptions.BadRequestException;
+import Massimiliano.GestioneEventi.Payloads.AdminDTO;
 import Massimiliano.GestioneEventi.Payloads.UtenteDTO;
 import Massimiliano.GestioneEventi.Payloads.UtenteLoginDTO;
 import Massimiliano.GestioneEventi.Payloads.UtenteLoginSuccDTO;
@@ -37,6 +38,19 @@ public class AuthController {
         } else {
             try {
                 return authService.registerUtente(body);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    @PostMapping("/register/admin")
+    @ResponseStatus(HttpStatus.CREATED) // <-- 201
+    public Utente saveAdmin(@RequestBody @Validated AdminDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            throw new BadRequestException(validation.getAllErrors());
+        } else {
+            try {
+                return authService.registerAdmin(body);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
