@@ -18,7 +18,7 @@ public class Eventi {
     private String descrizione;
     private LocalDate data;
     private String luogo;
-    private int numeroPosti;
+    private int numero_posti;
 
     @ManyToOne
     @JoinColumn(name = "utente_id")
